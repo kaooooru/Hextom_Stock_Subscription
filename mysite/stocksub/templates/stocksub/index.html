@@ -1,0 +1,28 @@
+{% extends 'stocksub/base.html' %}
+
+{% block content %}
+
+<h1> Welcome to the Stock Price Subscriber</h1>
+
+<p> Please enter the stock ticker and your phone number </p>
+
+{% if form.errors %}
+<p> error </p>
+{% endif %}
+
+{% load crispy_forms_tags %}
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div>
+        <input type="submit" name="sendnow" value="Send Now" />
+    </div>
+    <div>
+        <input type="submit" name="subscribe" value="Subscribe" />
+    </div>
+    <div>
+        <input type="submit" name="unsubscribe" value="Unsubscribe" />
+    </div>
+</form>
+
+{% endblock %}
