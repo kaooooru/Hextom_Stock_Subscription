@@ -25,8 +25,8 @@ def stockPrice(ticker):
     return price
 
 def broadcast(ticker, number, price):
-    account_sid = "ACf790e37fc8dc05e01de60d1ca899fc0e"
-    auth_token  = "21991e47a869d8c814a5369901e12450"
+    account_sid = "XXXX"
+    auth_token  = "XXXX"
 
     client = Client(account_sid, auth_token)
 
