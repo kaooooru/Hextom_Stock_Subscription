@@ -76,4 +76,26 @@ def broadcast(request):
     
     return HttpResponse("messages sent!")
 
+def sendSMS(request):
+    account_sid = "XXXX"
+    auth_token  = "XXXX"
+
+    client = Client(account_sid, auth_token)
+
+    user_id = request.POST.get('getsms')
+
+    user = Subscription.objects.get(id=user_id)
+    ticker = user.ticker
+    number = user.number
+
+    message_to_broadcast = ("The stock price of " + ticker + " is " + str(stockPrice(ticker)))
+
+    client.messages.create(
+        to=number, 
+        from_="XXXX",
+        body=message_to_broadcast)
+
+    return HttpResponse("messages sent!")
+
+
     
