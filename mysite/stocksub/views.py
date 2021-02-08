@@ -31,6 +31,7 @@ def index(request):
             except:
                 return HttpResponse("Subscription does not exist, please go back and retry.")
             return HttpResponse("Unsubscribe")
+
         else:
             return sendSMS(request)
 
@@ -100,4 +101,3 @@ def sendSMS(request):
     return HttpResponse("messages sent!")
 
 
-    
