@@ -13,6 +13,7 @@ import re
 import time
 
 def index(request):
+    records = Subscription.objects.all()
     if request.method == 'POST':
         if 'sendnow' in request.POST:
             return broadcast(request)
@@ -21,7 +22,7 @@ def index(request):
             if form.is_valid():        
                 form.save()
                 return redirect('stocksub:thanks')
-        else:
+        elif 'unsubscribe' in request.POST:
             current_ticker = request.POST.get('ticker')
             current_phonenum = request.POST.get('number')
             try:
@@ -30,10 +31,12 @@ def index(request):
             except:
                 return HttpResponse("Subscription does not exist, please go back and retry.")
             return HttpResponse("Unsubscribe")
-            
+        else:
+            return sendSMS(request)
+
     else:
         form = SubscripForm()
-    return render(request, 'stocksub/index.html', { 'form': form })
+    return render(request, 'stocksub/index.html', { 'form': form, 'records': records })
 
   
 
@@ -59,8 +62,8 @@ def stockPrice(ticker):
 
 
 def broadcast(request):
-    account_sid = "ACf790e37fc8dc05e01de60d1ca899fc0e"
-    auth_token  = "21991e47a869d8c814a5369901e12450"
+    account_sid = "ACa2a8034dadd2bd364d00a64187ae037c"
+    auth_token  = "75f5feebbb1a43ed1a602e76709e0982"
 
     client = Client(account_sid, auth_token)
 
@@ -70,9 +73,31 @@ def broadcast(request):
 
     client.messages.create(
         to=request.POST.get('number'), 
-        from_="+12158762820",
+        from_="+16479059186",
         body=message_to_broadcast)
     
     return HttpResponse("messages sent!")
+
+def sendSMS(request):
+    account_sid = "ACa2a8034dadd2bd364d00a64187ae037c"
+    auth_token  = "75f5feebbb1a43ed1a602e76709e0982"
+
+    client = Client(account_sid, auth_token)
+
+    user_id = request.POST.get('getsms')
+
+    user = Subscription.objects.get(id=user_id)
+    ticker = user.ticker
+    number = user.number
+
+    message_to_broadcast = ("The stock price of " + ticker + " is " + str(stockPrice(ticker)))
+
+    client.messages.create(
+        to=number, 
+        from_="+16479059186",
+        body=message_to_broadcast)
+
+    return HttpResponse("messages sent!")
+
 
     
