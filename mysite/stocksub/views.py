@@ -13,6 +13,7 @@ import re
 import time
 
 def index(request):
+    records = Subscription.objects.all()
     if request.method == 'POST':
         if 'sendnow' in request.POST:
             return broadcast(request)
@@ -21,7 +22,7 @@ def index(request):
             if form.is_valid():        
                 form.save()
                 return redirect('stocksub:thanks')
-        else:
+        elif 'unsubscribe' in request.POST:
             current_ticker = request.POST.get('ticker')
             current_phonenum = request.POST.get('number')
             try:
@@ -30,10 +31,10 @@ def index(request):
             except:
                 return HttpResponse("Subscription does not exist, please go back and retry.")
             return HttpResponse("Unsubscribe")
-            
+
     else:
         form = SubscripForm()
-    return render(request, 'stocksub/index.html', { 'form': form })
+    return render(request, 'stocksub/index.html', { 'form': form, 'records': records })
 
   
 
@@ -70,7 +71,7 @@ def broadcast(request):
 
     client.messages.create(
         to=request.POST.get('number'), 
-        from_="+12158762820",
+        from_="XXXX",
         body=message_to_broadcast)
     
     return HttpResponse("messages sent!")
