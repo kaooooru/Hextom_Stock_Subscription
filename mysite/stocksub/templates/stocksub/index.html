@@ -15,14 +15,44 @@
     {% csrf_token %}
     {{ form|crispy }}
     <div>
-        <input type="submit" name="sendnow" value="Send Now" />
+        <input type="submit" class="btn btn-outline-dark" name="sendnow" value="Send Now" />
     </div>
+    <br/>
     <div>
-        <input type="submit" name="subscribe" value="Subscribe" />
+        <input type="submit" class="btn btn-outline-dark" name="subscribe" value="Subscribe" />
     </div>
+    <br/>
     <div>
-        <input type="submit" name="unsubscribe" value="Unsubscribe" />
+        <input type="submit" class="btn btn-outline-dark" name="unsubscribe" value="Unsubscribe" />
     </div>
+    <br/>
+    <div class="container">
+        <div class="row">
+          <div>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Stock Ticker</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Send SMS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <th scope="row">{{ record.id }}</th>
+                            <td>{{ record.ticker }}</td>
+                            <td>{{ record.number }}</td>
+                            <td><buttont type="button" class="btn btn-outline-dark" value="+record.id+" onClick="getSMS(this.value)">Send Now</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+
 </form>
 
 {% endblock %}
