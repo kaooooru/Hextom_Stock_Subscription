@@ -25,8 +25,8 @@ def stockPrice(ticker):
     return price
 
 def broadcast(ticker, number, price):
-    account_sid = "ACa2a8034dadd2bd364d00a64187ae037c"
-    auth_token  = "75f5feebbb1a43ed1a602e76709e0982"
+    account_sid = "XXXX"
+    auth_token  = "XXXX"
 
     client = Client(account_sid, auth_token)
 
@@ -34,7 +34,7 @@ def broadcast(ticker, number, price):
 
     client.messages.create(
         to=number, 
-        from_="+16479059186",
+        from_="XXXX",
         body=message_to_broadcast)
 
 try:
